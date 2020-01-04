@@ -17,6 +17,7 @@
 	"block.buzzierbees.crystallized_honey_block": "Crystallized Honey Block",
 	"block.buzzierbees.clover_honey_block": "Clover Honey Block",
 	"block.buzzierbees.honey_lamp" : "Honey Lamp",
+	"block.buzzierbees.honey_piston" : "Honey Piston",
 	
 	"block.buzzierbees.honey_bricks": "Honey Bricks",
 	"block.buzzierbees.honey_brick_stairs": "Honey Brick Stairs",
@@ -275,5 +276,8 @@
 	"item.minecraft.tipped_arrow.effect.strong_luck": "Arrow of Luck",
 	"item.minecraft.tipped_arrow.effect.bad_luck": "Arrow of Bad Luck",
 	"item.minecraft.tipped_arrow.effect.long_bad_luck": "Arrow of Bad Luck",
-	"item.minecraft.tipped_arrow.effect.strong_bad_luck": "Arrow of Bad Luck"
+	"item.minecraft.tipped_arrow.effect.strong_bad_luck": "Arrow of Bad Luck",
+	
+	
+	"block.minecraft.sticky_piston" : "Slimy Piston"
 }

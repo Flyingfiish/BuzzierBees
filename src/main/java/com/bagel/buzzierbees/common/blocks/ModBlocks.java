@@ -1,5 +1,10 @@
 package com.bagel.buzzierbees.common.blocks;
 
+import com.bagel.buzzierbees.common.blocks.Piston.AdvancedPistonBlock;
+import com.bagel.buzzierbees.common.blocks.Piston.AdvancedPistonType;
+import com.bagel.buzzierbees.common.blocks.Piston.AdvancedPistonHeadBlock;
+import com.bagel.buzzierbees.common.blocks.Piston.AdvancedMovingPistonBlock;
+
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColor;
@@ -7,6 +12,8 @@ import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.potion.Effects;
+import net.minecraft.state.EnumProperty;
+import net.minecraft.state.properties.PistonType;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.ModList;
@@ -78,6 +85,12 @@ public class ModBlocks
 	public static Block CRYSTALLIZED_CLOVER_HONEY_BLOCK;
 	public static Block HONEY_LAMP;
 	
+	public static Block PISTON;
+	public static Block STICKY_PISTON;
+	public static Block HONEY_PISTON;
+	public static Block PISTON_HEAD;
+	public static Block MOVING_PISTON;
+	
 	public static Block CARTWHEEL;
 	public static Block BLUEBELL;
 	public static Block VIOLET;
@@ -118,6 +131,8 @@ public class ModBlocks
 	
 	public static Block HIVE_BLOCK;
 	
+	public static final EnumProperty<AdvancedPistonType> ADVANCED_PISTON_TYPE = EnumProperty.create("type", AdvancedPistonType.class);
+	
 	@SuppressWarnings("deprecation")
 	@SubscribeEvent
     public static void registerBlocks(RegistryEvent.Register<Block> event)
@@ -132,13 +147,18 @@ public class ModBlocks
 		WAX_BLOCK          = registerBlock(new Block           (Block.Properties.create(Material.CORAL).hardnessAndResistance(0.3F).sound(SoundType.CORAL)), "wax_block",          ItemGroup.DECORATIONS);
 		CLOVER_HONEY_BLOCK = registerBlock(new CloverHoneyBlock(HONEY_BLOCK_PROPERTIES),                            										 "clover_honey_block", ItemGroup.DECORATIONS);
 		HONEY_LAMP         = registerBlock(new HoneyLamp       (Block.Properties.from(Blocks.END_ROD).sound(SoundType.field_226947_m_)),                     "honey_lamp",         ItemGroup.DECORATIONS);
+		HONEY_PISTON = registerBlock(new AdvancedPistonBlock(true, false, Block.Properties.from(Blocks.STICKY_PISTON)), "honey_piston", ItemGroup.REDSTONE);
+		PISTON_HEAD = registerBlockNoItem(new AdvancedPistonHeadBlock(Block.Properties.from(Blocks.PISTON_HEAD).noDrops()), "piston_head");
+		PISTON = registerBlock(new AdvancedPistonBlock(false, false, Block.Properties.from(Blocks.PISTON)), "minecraft:piston", ItemGroup.REDSTONE);
+		STICKY_PISTON = registerBlock(new AdvancedPistonBlock(false, true, Block.Properties.from(Blocks.STICKY_PISTON)), "minecraft:sticky_piston", ItemGroup.REDSTONE);
+		MOVING_PISTON = registerBlockNoItem(new AdvancedMovingPistonBlock(Block.Properties.from(Blocks.MOVING_PISTON)), "moving_piston");
 		
 		HONEY_BRICKS        = registerBlock(new Block(Block.Properties.from(Blocks.BRICKS)),"honey_bricks", ItemGroup.BUILDING_BLOCKS);
 		HONEY_BRICK_STAIRS = registerBlock(new StairsBlock(HONEY_BRICKS.getDefaultState(), Block.Properties.from(Blocks.BRICK_STAIRS)),"honey_brick_stairs", ItemGroup.BUILDING_BLOCKS);
 		HONEY_BRICK_SLAB = registerBlock(new SlabBlock(Block.Properties.from(Blocks.BRICK_SLAB)),"honey_brick_slab", ItemGroup.BUILDING_BLOCKS);
 		HONEY_BRICK_WALL = registerBlock(new WallBlock(Block.Properties.from(Blocks.BRICK_WALL)),"honey_brick_wall", ItemGroup.DECORATIONS);
 		
-		//CRYSTALLIZED_HONEY_BLOCK        = registerBlock(new Block(Block.Properties.create(Material.GLASS).func_226896_b_().hardnessAndResistance(0.3F).sound(SoundType.GLASS)), "crystallized_honey_block", ItemGroup.DECORATIONS);
+		CRYSTALLIZED_HONEY_BLOCK        = registerBlock(new Block(Block.Properties.create(Material.GLASS).func_226896_b_().hardnessAndResistance(0.3F).sound(SoundType.GLASS)), "crystallized_honey_block", ItemGroup.DECORATIONS);
 		//CRYSTALLIZED_CLOVER_HONEY_BLOCK = registerBlock(new Block(Block.Properties.from(CRYSTALLIZED_HONEY_BLOCK)),"crystallized_clover_honey_block", ItemGroup.DECORATIONS);
 
 		//Hive Planks Section
