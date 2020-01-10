@@ -49,10 +49,12 @@ public class AdvancedPistonBlock extends DirectionalBlock {
       this.isSlime = slime;
    }
 
+   @SuppressWarnings("deprecation")
    public boolean func_229869_c_(BlockState p_229869_1_, IBlockReader p_229869_2_, BlockPos p_229869_3_) {
       return !p_229869_1_.get(EXTENDED);
    }
 
+   @SuppressWarnings("deprecation")
    public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
       if (state.get(EXTENDED)) {
          switch((Direction)state.get(FACING)) {
@@ -75,6 +77,7 @@ public class AdvancedPistonBlock extends DirectionalBlock {
       }
    }
 
+   @SuppressWarnings("deprecation")
    public boolean isNormalCube(BlockState state, IBlockReader worldIn, BlockPos pos) {
       return false;
    }
@@ -89,6 +92,7 @@ public class AdvancedPistonBlock extends DirectionalBlock {
 
    }
 
+   @SuppressWarnings("deprecation")
    public void neighborChanged(BlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving) {
       if (!worldIn.isRemote) {
          this.checkForMove(worldIn, pos, state);
@@ -96,6 +100,7 @@ public class AdvancedPistonBlock extends DirectionalBlock {
 
    }
 
+   @SuppressWarnings("deprecation")
    public void onBlockAdded(BlockState state, World worldIn, BlockPos pos, BlockState oldState, boolean isMoving) {
       if (oldState.getBlock() != state.getBlock()) {
          if (!worldIn.isRemote && worldIn.getTileEntity(pos) == null) {
@@ -163,6 +168,7 @@ public class AdvancedPistonBlock extends DirectionalBlock {
     * base. On the client, the update may involve replacing tile entities or effects such as sounds or particles
     * Implementing/overriding is fine.
     */
+   @SuppressWarnings("deprecation")
    public boolean eventReceived(BlockState state, World worldIn, BlockPos pos, int id, int param) {
       Direction direction = state.get(FACING);
       if (!worldIn.isRemote) {

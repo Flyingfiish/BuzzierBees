@@ -48,6 +48,7 @@ public class AdvancedMovingPistonBlock extends ContainerBlock {
       return new AdvancedPistonTileEntity(p_196343_0_, p_196343_1_, p_196343_2_, p_196343_3_);
    }
 
+   @SuppressWarnings("deprecation")
    public void onReplaced(BlockState state, World worldIn, BlockPos pos, BlockState newState, boolean isMoving) {
       if (state.getBlock() != newState.getBlock()) {
          TileEntity tileentity = worldIn.getTileEntity(pos);
@@ -70,14 +71,17 @@ public class AdvancedMovingPistonBlock extends ContainerBlock {
 
    }
 
+   @SuppressWarnings("deprecation")
    public boolean isNormalCube(BlockState state, IBlockReader worldIn, BlockPos pos) {
       return false;
    }
 
+   @SuppressWarnings("deprecation")
    public boolean func_229869_c_(BlockState p_229869_1_, IBlockReader p_229869_2_, BlockPos p_229869_3_) {
       return false;
    }
 
+   @SuppressWarnings("deprecation")
    public ActionResultType func_225533_a_(BlockState p_225533_1_, World p_225533_2_, BlockPos p_225533_3_, PlayerEntity p_225533_4_, Hand p_225533_5_, BlockRayTraceResult p_225533_6_) {
       if (!p_225533_2_.isRemote && p_225533_2_.getTileEntity(p_225533_3_) == null) {
          p_225533_2_.removeBlock(p_225533_3_, false);
@@ -87,15 +91,18 @@ public class AdvancedMovingPistonBlock extends ContainerBlock {
       }
    }
 
+   @SuppressWarnings("deprecation")
    public List<ItemStack> getDrops(BlockState state, LootContext.Builder builder) {
       AdvancedPistonTileEntity pistontileentity = this.func_220170_a(builder.getWorld(), builder.assertPresent(LootParameters.POSITION));
       return pistontileentity == null ? Collections.emptyList() : pistontileentity.getPistonState().getDrops(builder);
    }
 
+   @SuppressWarnings("deprecation")
    public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
       return VoxelShapes.empty();
    }
 
+   @SuppressWarnings("deprecation")
    public VoxelShape getCollisionShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
       AdvancedPistonTileEntity pistontileentity = this.func_220170_a(worldIn, pos);
       return pistontileentity != null ? pistontileentity.getCollisionShape(worldIn, pos) : VoxelShapes.empty();
@@ -107,6 +114,7 @@ public class AdvancedMovingPistonBlock extends ContainerBlock {
       return tileentity instanceof AdvancedPistonTileEntity ? (AdvancedPistonTileEntity)tileentity : null;
    }
 
+   @SuppressWarnings("deprecation")
    public ItemStack getItem(IBlockReader worldIn, BlockPos pos, BlockState state) {
       return ItemStack.EMPTY;
    }
@@ -116,6 +124,7 @@ public class AdvancedMovingPistonBlock extends ContainerBlock {
     * blockstate.
     * fine.
     */
+   @SuppressWarnings("deprecation")
    public BlockState rotate(BlockState state, Rotation rot) {
       return state.with(FACING, rot.rotate(state.get(FACING)));
    }
@@ -124,6 +133,7 @@ public class AdvancedMovingPistonBlock extends ContainerBlock {
     * Returns the blockstate with the given mirror of the passed blockstate. If inapplicable, returns the passed
     * blockstate.
     */
+   @SuppressWarnings("deprecation")
    public BlockState mirror(BlockState state, Mirror mirrorIn) {
       return state.rotate(mirrorIn.toRotation(state.get(FACING)));
    }
@@ -132,6 +142,7 @@ public class AdvancedMovingPistonBlock extends ContainerBlock {
       builder.add(FACING, TYPE);
    }
 
+   @SuppressWarnings("deprecation")
    public boolean allowsMovement(BlockState state, IBlockReader worldIn, BlockPos pos, PathType type) {
       return false;
    }
