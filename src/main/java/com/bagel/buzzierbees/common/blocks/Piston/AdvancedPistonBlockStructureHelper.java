@@ -1,4 +1,4 @@
-/*package com.bagel.buzzierbees.common.blocks.piston;
+package com.bagel.buzzierbees.common.blocks.piston;
 
 import java.util.List;
 
@@ -178,4 +178,3 @@ public class AdvancedPistonBlockStructureHelper {
       return this.toDestroy;
    }
 }
-*/

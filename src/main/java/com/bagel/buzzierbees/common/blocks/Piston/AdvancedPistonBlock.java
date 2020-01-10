@@ -118,7 +118,7 @@ public class AdvancedPistonBlock extends DirectionalBlock {
       Direction direction = state.get(FACING);
       boolean flag = this.shouldBeExtended(worldIn, pos, direction);
       if (flag && !state.get(EXTENDED)) {
-         if ((new PistonBlockStructureHelper(worldIn, pos, direction, true)).canMove()) {
+         if ((new AdvancedPistonBlockStructureHelper(worldIn, pos, direction, true)).canMove()) {
             worldIn.addBlockEvent(pos, this, 0, direction.getIndex());
          }
       } else if (!flag && state.get(EXTENDED)) {
@@ -278,7 +278,7 @@ public static boolean canPush(BlockState blockStateIn, World worldIn, BlockPos p
          worldIn.setBlockState(blockpos, Blocks.AIR.getDefaultState(), 20);
       }
 
-      PistonBlockStructureHelper honeypistonblockstructurehelper = new PistonBlockStructureHelper(worldIn, pos, directionIn, extending);
+      AdvancedPistonBlockStructureHelper honeypistonblockstructurehelper = new AdvancedPistonBlockStructureHelper(worldIn, pos, directionIn, extending);
       if (!honeypistonblockstructurehelper.canMove()) {
          return false;
       } else {
