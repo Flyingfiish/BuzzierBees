@@ -1,11 +1,10 @@
-package com.bagel.buzzierbees.common.blocks.Piston;
+/*package com.bagel.buzzierbees.common.blocks.piston;
 
 import net.minecraft.util.IStringSerializable;
 
 public enum AdvancedPistonType implements IStringSerializable {
 	   DEFAULT("normal"),
-	   SLIMY("slimy"),
-	   HONEY("sticky");
+	   STICKY("sticky");
 
 	   private final String name;
 
@@ -20,4 +19,4 @@ public enum AdvancedPistonType implements IStringSerializable {
 	   public String getName() {
 	      return this.name;
 	   }
-	}
+	}*/

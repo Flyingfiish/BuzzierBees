@@ -1,4 +1,4 @@
-package com.bagel.buzzierbees.common.blocks.Piston;
+package com.bagel.buzzierbees.common.blocks.piston;
 
 import java.util.List;
 import java.util.Map;
@@ -8,10 +8,7 @@ import com.bagel.buzzierbees.common.blocks.ModBlocks;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.DirectionalBlock;
+import net.minecraft.block.*;
 import net.minecraft.block.material.PushReaction;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -21,6 +18,7 @@ import net.minecraft.pathfinding.PathType;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.StateContainer;
 import net.minecraft.state.properties.BlockStateProperties;
+import net.minecraft.state.properties.PistonType;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Mirror;
@@ -43,13 +41,11 @@ public class AdvancedPistonBlock extends DirectionalBlock {
    protected static final VoxelShape PISTON_BASE_NORTH_AABB = Block.makeCuboidShape(0.0D, 0.0D, 4.0D, 16.0D, 16.0D, 16.0D);
    protected static final VoxelShape PISTON_BASE_UP_AABB = Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 12.0D, 16.0D);
    protected static final VoxelShape PISTON_BASE_DOWN_AABB = Block.makeCuboidShape(0.0D, 4.0D, 0.0D, 16.0D, 16.0D, 16.0D);
-   private final boolean isHoney;
    private final boolean isSlime;
 
-   public AdvancedPistonBlock(boolean slime, boolean honey, Block.Properties properties) {
+   public AdvancedPistonBlock(boolean slime, Block.Properties properties) {
       super(properties);
       this.setDefaultState(this.stateContainer.getBaseState().with(FACING, Direction.NORTH).with(EXTENDED, Boolean.valueOf(false)));
-      this.isHoney = honey;
       this.isSlime = slime;
    }
 
@@ -117,7 +113,7 @@ public class AdvancedPistonBlock extends DirectionalBlock {
       Direction direction = state.get(FACING);
       boolean flag = this.shouldBeExtended(worldIn, pos, direction);
       if (flag && !state.get(EXTENDED)) {
-         if ((new AdvancedPistonBlockStructureHelper(worldIn, pos, direction, true)).canMove()) {
+         if ((new PistonBlockStructureHelper(worldIn, pos, direction, true)).canMove()) {
             worldIn.addBlockEvent(pos, this, 0, direction.getIndex());
          }
       } else if (!flag && state.get(EXTENDED)) {
@@ -165,7 +161,6 @@ public class AdvancedPistonBlock extends DirectionalBlock {
     * Called on server when World#addBlockEvent is called. If server returns true, then also called on the client. On
     * the Server, this may perform additional changes to the world, like pistons replacing the block with an extended
     * base. On the client, the update may involve replacing tile entities or effects such as sounds or particles
-    * @deprecated call via {@link IBlockState#onBlockEventReceived(World,BlockPos,int,int)} whenever possible.
     * Implementing/overriding is fine.
     */
    public boolean eventReceived(BlockState state, World worldIn, BlockPos pos, int id, int param) {
@@ -194,12 +189,12 @@ public class AdvancedPistonBlock extends DirectionalBlock {
          if (net.minecraftforge.event.ForgeEventFactory.onPistonMovePre(worldIn, pos, direction, false)) return false;
          TileEntity tileentity1 = worldIn.getTileEntity(pos.offset(direction));
          if (tileentity1 instanceof AdvancedPistonTileEntity) {
-            ((AdvancedPistonTileEntity)tileentity1).clearAdvancedPistonTileEntity();
+            ((AdvancedPistonTileEntity)tileentity1).clearPistonTileEntity();
          }
 
-         worldIn.setBlockState(pos, ModBlocks.MOVING_PISTON.getDefaultState().with(AdvancedMovingPistonBlock.FACING, direction).with(AdvancedMovingPistonBlock.TYPE, this.isSlime ? AdvancedPistonType.SLIMY : this.isHoney ? AdvancedPistonType.HONEY : AdvancedPistonType.DEFAULT), 3);
+         worldIn.setBlockState(pos, ModBlocks.MOVING_PISTON.getDefaultState().with(AdvancedMovingPistonBlock.FACING, direction).with(AdvancedMovingPistonBlock.TYPE, this.isSlime ? PistonType.STICKY : PistonType.DEFAULT), 3);
          worldIn.setTileEntity(pos, AdvancedMovingPistonBlock.createTilePiston(this.getDefaultState().with(FACING, Direction.byIndex(param & 7)), direction, false, true));
-         if (this.isSlime || this.isHoney) {
+         if (this.isSlime) {
             BlockPos blockpos = pos.add(direction.getXOffset() * 2, direction.getYOffset() * 2, direction.getZOffset() * 2);
             BlockState blockstate = worldIn.getBlockState(blockpos);
             Block block = blockstate.getBlock();
@@ -209,7 +204,7 @@ public class AdvancedPistonBlock extends DirectionalBlock {
                if (tileentity instanceof AdvancedPistonTileEntity) {
                   AdvancedPistonTileEntity pistontileentity = (AdvancedPistonTileEntity)tileentity;
                   if (pistontileentity.getFacing() == direction && pistontileentity.isExtending()) {
-                     pistontileentity.clearAdvancedPistonTileEntity();
+                     pistontileentity.clearPistonTileEntity();
                      flag1 = true;
                   }
                }
@@ -277,7 +272,7 @@ public static boolean canPush(BlockState blockStateIn, World worldIn, BlockPos p
          worldIn.setBlockState(blockpos, Blocks.AIR.getDefaultState(), 20);
       }
 
-      AdvancedPistonBlockStructureHelper honeypistonblockstructurehelper = new AdvancedPistonBlockStructureHelper(worldIn, pos, directionIn, extending);
+      PistonBlockStructureHelper honeypistonblockstructurehelper = new PistonBlockStructureHelper(worldIn, pos, directionIn, extending);
       if (!honeypistonblockstructurehelper.canMove()) {
          return false;
       } else {
@@ -319,9 +314,9 @@ public static boolean canPush(BlockState blockStateIn, World worldIn, BlockPos p
          }
 
          if (extending) {
-            AdvancedPistonType pistontype = this.isSlime ? AdvancedPistonType.SLIMY : this.isHoney ? AdvancedPistonType.HONEY : AdvancedPistonType.DEFAULT;
+            PistonType pistontype = this.isSlime ? PistonType.STICKY : PistonType.DEFAULT;
             BlockState blockstate4 = ModBlocks.PISTON_HEAD.getDefaultState().with(AdvancedPistonHeadBlock.FACING, directionIn).with(AdvancedPistonHeadBlock.TYPE, pistontype);
-            BlockState blockstate6 = ModBlocks.MOVING_PISTON.getDefaultState().with(AdvancedMovingPistonBlock.FACING, directionIn).with(AdvancedMovingPistonBlock.TYPE, this.isSlime ? AdvancedPistonType.SLIMY : this.isHoney ? AdvancedPistonType.HONEY : AdvancedPistonType.DEFAULT);
+            BlockState blockstate6 = ModBlocks.MOVING_PISTON.getDefaultState().with(AdvancedMovingPistonBlock.FACING, directionIn).with(AdvancedMovingPistonBlock.TYPE, this.isSlime ? PistonType.STICKY : PistonType.DEFAULT);
             map.remove(blockpos);
             worldIn.setBlockState(blockpos, blockstate6, 68);
             worldIn.setTileEntity(blockpos, AdvancedMovingPistonBlock.createTilePiston(blockstate4, directionIn, true, true));
@@ -363,7 +358,6 @@ public static boolean canPush(BlockState blockStateIn, World worldIn, BlockPos p
    /**
     * Returns the blockstate with the given rotation from the passed blockstate. If inapplicable, returns the passed
     * blockstate.
-    * @deprecated call via {@link IBlockState#withRotation(Rotation)} whenever possible. Implementing/overriding is
     * fine.
     */
    public BlockState rotate(BlockState state, Rotation rot) {
@@ -377,7 +371,6 @@ public static boolean canPush(BlockState blockStateIn, World worldIn, BlockPos p
    /**
     * Returns the blockstate with the given mirror of the passed blockstate. If inapplicable, returns the passed
     * blockstate.
-    * @deprecated call via {@link IBlockState#withMirror(Mirror)} whenever possible. Implementing/overriding is fine.
     */
    public BlockState mirror(BlockState state, Mirror mirrorIn) {
       return state.rotate(mirrorIn.toRotation(state.get(FACING)));

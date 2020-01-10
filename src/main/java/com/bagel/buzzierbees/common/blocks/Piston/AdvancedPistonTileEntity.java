@@ -1,18 +1,19 @@
-package com.bagel.buzzierbees.common.blocks.Piston;
+package com.bagel.buzzierbees.common.blocks.piston;
 
 import java.util.List;
 
 import com.bagel.buzzierbees.common.blocks.ModBlocks;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
+import com.bagel.buzzierbees.common.blocks.ModTileEntities;
+import com.bagel.buzzierbees.common.entities.ModEntities;
+import net.minecraft.block.*;
 import net.minecraft.block.material.PushReaction;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.MoverType;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.NBTUtil;
 import net.minecraft.state.properties.BlockStateProperties;
+import net.minecraft.state.properties.PistonType;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
@@ -41,7 +42,7 @@ public class AdvancedPistonTileEntity extends TileEntity implements ITickableTil
    private long lastTicked;
 
    public AdvancedPistonTileEntity() {
-      super(TileEntityType.PISTON);
+      super(ModTileEntities.PISTON.get());
    }
 
    public AdvancedPistonTileEntity(BlockState pistonStateIn, Direction pistonFacingIn, boolean extendingIn, boolean shouldHeadBeRenderedIn) {
@@ -54,7 +55,6 @@ public class AdvancedPistonTileEntity extends TileEntity implements ITickableTil
 
    /**
     * Get an NBT compound to sync to the client with SPacketChunkData, used for initial loading of the chunk or when
-    * many blocks change at once. This compound comes back to you clientside in {@link handleUpdateTag}
     */
    public CompoundNBT getUpdateTag() {
       return this.write(new CompoundNBT());
@@ -107,7 +107,7 @@ public class AdvancedPistonTileEntity extends TileEntity implements ITickableTil
    }
 
    private BlockState getCollisionRelatedBlockState() {
-      return !this.isExtending() && this.shouldPistonHeadBeRendered() && this.pistonState.getBlock() instanceof AdvancedPistonBlock ? ModBlocks.PISTON_HEAD.getDefaultState().with(AdvancedPistonHeadBlock.TYPE, this.pistonState.getBlock() == ModBlocks.HONEY_PISTON ? AdvancedPistonType.HONEY : this.pistonState.getBlock() == ModBlocks.STICKY_PISTON ? AdvancedPistonType.SLIMY : AdvancedPistonType.DEFAULT).with(AdvancedPistonHeadBlock.FACING, this.pistonState.get(AdvancedPistonBlock.FACING)) : this.pistonState;
+      return !this.isExtending() && this.shouldPistonHeadBeRendered() && this.pistonState.getBlock() instanceof PistonBlock ? ModBlocks.PISTON_HEAD.getDefaultState().with(AdvancedPistonHeadBlock.TYPE, this.pistonState.getBlock() == ModBlocks.STICKY_PISTON ? PistonType.STICKY : PistonType.DEFAULT).with(AdvancedPistonHeadBlock.FACING, this.pistonState.get(PistonBlock.FACING)) : this.pistonState;
    }
 
    private void moveCollidedEntities(float p_184322_1_) {
@@ -129,14 +129,14 @@ public class AdvancedPistonTileEntity extends TileEntity implements ITickableTil
                      double d2 = vec3d.y;
                      double d3 = vec3d.z;
                      switch(direction.getAxis()) {
-                     case X:
-                        d1 = (double)direction.getXOffset();
-                        break;
-                     case Y:
-                        d2 = (double)direction.getYOffset();
-                        break;
-                     case Z:
-                        d3 = (double)direction.getZOffset();
+                        case X:
+                           d1 = (double)direction.getXOffset();
+                           break;
+                        case Y:
+                           d2 = (double)direction.getYOffset();
+                           break;
+                        case Z:
+                           d3 = (double)direction.getZOffset();
                      }
 
                      entity.setMotion(d1, d2, d3);
@@ -198,7 +198,7 @@ public class AdvancedPistonTileEntity extends TileEntity implements ITickableTil
    }
 
    private boolean func_227025_y_() {
-      return this.pistonState.getBlock() == Blocks.field_226907_mc_;
+      return this.pistonState.getBlock() == ModBlocks.HONEY_BLOCK;
    }
 
    public Direction getMotionDirection() {
@@ -227,19 +227,19 @@ public class AdvancedPistonTileEntity extends TileEntity implements ITickableTil
 
    private static double getMovement(AxisAlignedBB p_190612_0_, Direction p_190612_1_, AxisAlignedBB facing) {
       switch(p_190612_1_) {
-      case EAST:
-         return p_190612_0_.maxX - facing.minX;
-      case WEST:
-         return facing.maxX - p_190612_0_.minX;
-      case UP:
-      default:
-         return p_190612_0_.maxY - facing.minY;
-      case DOWN:
-         return facing.maxY - p_190612_0_.minY;
-      case SOUTH:
-         return p_190612_0_.maxZ - facing.minZ;
-      case NORTH:
-         return facing.maxZ - p_190612_0_.minZ;
+         case EAST:
+            return p_190612_0_.maxX - facing.minX;
+         case WEST:
+            return facing.maxX - p_190612_0_.minX;
+         case UP:
+         default:
+            return p_190612_0_.maxY - facing.minY;
+         case DOWN:
+            return facing.maxY - p_190612_0_.minY;
+         case SOUTH:
+            return p_190612_0_.maxZ - facing.minZ;
+         case NORTH:
+            return facing.maxZ - p_190612_0_.minZ;
       }
    }
 
@@ -270,7 +270,7 @@ public class AdvancedPistonTileEntity extends TileEntity implements ITickableTil
    /**
     * removes a piston's tile entity (and if the piston is moving, stops it)
     */
-   public void clearAdvancedPistonTileEntity() {
+   public void clearPistonTileEntity() {
       if (this.lastProgress < 1.0F && this.world != null) {
          this.progress = 1.0F;
          this.lastProgress = this.progress;
@@ -291,14 +291,13 @@ public class AdvancedPistonTileEntity extends TileEntity implements ITickableTil
 
    }
 
-   @SuppressWarnings("deprecation")
-public void tick() {
+   public void tick() {
       this.lastTicked = this.world.getGameTime();
       this.lastProgress = this.progress;
       if (this.lastProgress >= 1.0F) {
          this.world.removeTileEntity(this.pos);
          this.remove();
-         if (this.pistonState != null && this.world.getBlockState(this.pos).getBlock() == ModBlocks.MOVING_PISTON) {
+         if (this.pistonState != null && this.world.getBlockState(this.pos).getBlock() == Blocks.MOVING_PISTON) {
             BlockState blockstate = Block.getValidBlockForPosition(this.pistonState, this.world, this.pos);
             if (blockstate.isAir()) {
                this.world.setBlockState(this.pos, this.pistonState, 84);

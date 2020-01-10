@@ -1,4 +1,4 @@
-package com.bagel.buzzierbees.common.blocks.Piston;
+package com.bagel.buzzierbees.common.blocks.piston;
 
 import com.bagel.buzzierbees.common.blocks.ModBlocks;
 
@@ -13,6 +13,7 @@ import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.EnumProperty;
 import net.minecraft.state.StateContainer;
 import net.minecraft.state.properties.BlockStateProperties;
+import net.minecraft.state.properties.PistonType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Mirror;
 import net.minecraft.util.Rotation;
@@ -26,7 +27,7 @@ import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 
 public class AdvancedPistonHeadBlock extends DirectionalBlock {
-   public static final EnumProperty<AdvancedPistonType> TYPE = ModBlocks.ADVANCED_PISTON_TYPE;
+   public static final EnumProperty<PistonType> TYPE = BlockStateProperties.PISTON_TYPE;
    public static final BooleanProperty SHORT = BlockStateProperties.SHORT;
    protected static final VoxelShape PISTON_EXTENSION_EAST_AABB = Block.makeCuboidShape(12.0D, 0.0D, 0.0D, 16.0D, 16.0D, 16.0D);
    protected static final VoxelShape PISTON_EXTENSION_WEST_AABB = Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 4.0D, 16.0D, 16.0D);
@@ -49,7 +50,7 @@ public class AdvancedPistonHeadBlock extends DirectionalBlock {
 
    public AdvancedPistonHeadBlock(Block.Properties properties) {
       super(properties);
-      this.setDefaultState(this.stateContainer.getBaseState().with(FACING, Direction.NORTH).with(TYPE, AdvancedPistonType.DEFAULT).with(SHORT, Boolean.valueOf(false)));
+      this.setDefaultState(this.stateContainer.getBaseState().with(FACING, Direction.NORTH).with(TYPE, PistonType.DEFAULT).with(SHORT, Boolean.valueOf(false)));
    }
 
    private VoxelShape getExtensionShapeFromState(BlockState state) {
@@ -153,24 +154,13 @@ public BlockState updatePostPlacement(BlockState stateIn, Direction facing, Bloc
    }
 
    public ItemStack getItem(IBlockReader worldIn, BlockPos pos, BlockState state) {
-      return new ItemStack(state.get(TYPE) == AdvancedPistonType.SLIMY ? ModBlocks.STICKY_PISTON : state.get(TYPE) == AdvancedPistonType.HONEY ? ModBlocks.HONEY_PISTON : ModBlocks.PISTON);
+      return new ItemStack(state.get(TYPE) == PistonType.STICKY ? ModBlocks.STICKY_PISTON : ModBlocks.PISTON);
    }
 
-   /**
-    * Returns the blockstate with the given rotation from the passed blockstate. If inapplicable, returns the passed
-    * blockstate.
-    * @deprecated call via {@link IBlockState#withRotation(Rotation)} whenever possible. Implementing/overriding is
-    * fine.
-    */
    public BlockState rotate(BlockState state, Rotation rot) {
       return state.with(FACING, rot.rotate(state.get(FACING)));
    }
 
-   /**
-    * Returns the blockstate with the given mirror of the passed blockstate. If inapplicable, returns the passed
-    * blockstate.
-    * @deprecated call via {@link IBlockState#withMirror(Mirror)} whenever possible. Implementing/overriding is fine.
-    */
    public BlockState mirror(BlockState state, Mirror mirrorIn) {
       return state.rotate(mirrorIn.toRotation(state.get(FACING)));
    }

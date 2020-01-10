@@ -1,18 +1,18 @@
-package com.bagel.buzzierbees.common.blocks.Piston;
+package com.bagel.buzzierbees.common.blocks.piston;
 
 import java.util.Collections;
 import java.util.List;
 import javax.annotation.Nullable;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.ContainerBlock;
+import net.minecraft.block.*;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.pathfinding.PathType;
 import net.minecraft.state.DirectionProperty;
 import net.minecraft.state.EnumProperty;
 import net.minecraft.state.StateContainer;
+import net.minecraft.state.properties.PistonType;
+import net.minecraft.tileentity.PistonTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
@@ -31,12 +31,12 @@ import net.minecraft.world.storage.loot.LootContext;
 import net.minecraft.world.storage.loot.LootParameters;
 
 public class AdvancedMovingPistonBlock extends ContainerBlock {
-   public static final DirectionProperty FACING = AdvancedPistonHeadBlock.FACING;
-   public static final EnumProperty<AdvancedPistonType> TYPE = AdvancedPistonHeadBlock.TYPE;
+   public static final DirectionProperty FACING = PistonHeadBlock.FACING;
+   public static final EnumProperty<PistonType> TYPE = PistonHeadBlock.TYPE;
 
    public AdvancedMovingPistonBlock(Block.Properties properties) {
       super(properties);
-      this.setDefaultState(this.stateContainer.getBaseState().with(FACING, Direction.NORTH).with(TYPE, AdvancedPistonType.DEFAULT));
+      this.setDefaultState(this.stateContainer.getBaseState().with(FACING, Direction.NORTH).with(TYPE, PistonType.DEFAULT));
    }
 
    @Nullable
@@ -52,7 +52,7 @@ public class AdvancedMovingPistonBlock extends ContainerBlock {
       if (state.getBlock() != newState.getBlock()) {
          TileEntity tileentity = worldIn.getTileEntity(pos);
          if (tileentity instanceof AdvancedPistonTileEntity) {
-            ((AdvancedPistonTileEntity)tileentity).clearAdvancedPistonTileEntity();
+            ((AdvancedPistonTileEntity)tileentity).clearPistonTileEntity();
          }
 
       }
@@ -64,7 +64,7 @@ public class AdvancedMovingPistonBlock extends ContainerBlock {
    public void onPlayerDestroy(IWorld worldIn, BlockPos pos, BlockState state) {
       BlockPos blockpos = pos.offset(state.get(FACING).getOpposite());
       BlockState blockstate = worldIn.getBlockState(blockpos);
-      if (blockstate.getBlock() instanceof AdvancedPistonBlock && blockstate.get(AdvancedPistonBlock.EXTENDED)) {
+      if (blockstate.getBlock() instanceof PistonBlock && blockstate.get(PistonBlock.EXTENDED)) {
          worldIn.removeBlock(blockpos, false);
       }
 
@@ -114,7 +114,6 @@ public class AdvancedMovingPistonBlock extends ContainerBlock {
    /**
     * Returns the blockstate with the given rotation from the passed blockstate. If inapplicable, returns the passed
     * blockstate.
-    * @deprecated call via {@link IBlockState#withRotation(Rotation)} whenever possible. Implementing/overriding is
     * fine.
     */
    public BlockState rotate(BlockState state, Rotation rot) {
@@ -124,7 +123,6 @@ public class AdvancedMovingPistonBlock extends ContainerBlock {
    /**
     * Returns the blockstate with the given mirror of the passed blockstate. If inapplicable, returns the passed
     * blockstate.
-    * @deprecated call via {@link IBlockState#withMirror(Mirror)} whenever possible. Implementing/overriding is fine.
     */
    public BlockState mirror(BlockState state, Mirror mirrorIn) {
       return state.rotate(mirrorIn.toRotation(state.get(FACING)));

@@ -6,11 +6,22 @@
 	"item.buzzierbees.clover_leaf": "Clover Leaf",
 	"item.buzzierbees.four_leaf_clover": "Four Leaf Clover",
 	"item.buzzierbees.honey_wand": "Honey Wand",
+	"item.buzzierbees.sticky_honey_wand": "Sticky Honey Wand",
+	"item.buzzierbees.honey_apple": "Honey Apple",
+	"item.buzzierbees.honey_bread": "Honey Bread",
 	
 	"item.buzzierbees.honey_slime_spawn_egg": "Honey Slime Spawn Egg",
+	"entity.buzzierbees.honey_slime": "Honey Slime",
 	"item.buzzierbees.grizzly_bear_spawn_egg": "Grizzly Bear Spawn Egg",
 	"item.buzzierbees.royal_bee_spawn_egg": "Royal Bee Spawn Egg",
 	"item.buzzierbees.butterfly_spawn_egg": "Butterfly Spawn Egg",
+	
+	"block.minecraft.beehive": "Oak Beehive",
+	"block.buzzierbees.spruce_beehive": "Spruce Beehive",
+	"block.buzzierbees.birch_beehive": "Birch Beehive",
+	"block.buzzierbees.jungle_beehive": "Jungle Beehive",
+	"block.buzzierbees.acacia_beehive": "Acacia Beehive",
+	"block.buzzierbees.dark_oak_beehive": "Dark Oak Beehive",
 	
 	"block.buzzierbees.wax_block": "Wax Block",
 	
@@ -23,6 +34,7 @@
 	"block.buzzierbees.honey_brick_stairs": "Honey Brick Stairs",
 	"block.buzzierbees.honey_brick_slab": "Honey Brick Slab",
 	"block.buzzierbees.honey_brick_wall": "Honey Brick Wall",
+	"block.buzzierbees.honey_brick_vertical_slab": "Honey Brick Vertical Slab",
 	
 	"block.buzzierbees.cartwheel" : "Cartwheel",
 	"block.buzzierbees.bluebell" : "Bluebell",
@@ -43,6 +55,9 @@
 	"block.buzzierbees.hive_pressure_plate": "Hive Pressure Plate",
 	"block.buzzierbees.hive_door": "Hive Door",
 	"block.buzzierbees.hive_trapdoor": "Hive Trapdoor",
+	"block.buzzierbees.hive_sign": "Hive Sign",
+	"block.buzzierbees.vertical_hive_planks": "Vertical Hive Planks",
+	"block.buzzierbees.hive_vertical_slab": "Hive Vertical Slab",
 	
 	"block.buzzierbees.candle": "Candle",
 	"block.buzzierbees.white_candle": "White Candle",
@@ -61,6 +76,23 @@
 	"block.buzzierbees.green_candle": "Green Candle",
 	"block.buzzierbees.red_candle": "Red Candle",
 	"block.buzzierbees.black_candle": "Black Candle",
+	
+	"block.buzzierbees.amber_candle": "Amber Candle",
+	"block.buzzierbees.beige_candle": "Beige Candle",
+	"block.buzzierbees.cream_candle": "Cream Candle",
+	"block.buzzierbees.dark_green_candle": "Dark Green Candle",
+	"block.buzzierbees.forest_green_candle": "Forest Green Candle",
+	"block.buzzierbees.hot_pink_candle": "Hot Pink Candle",
+	"block.buzzierbees.indigo_candle": "Indigo Candle",
+	"block.buzzierbees.maroon_candle": "Maroon Candle",
+	"block.buzzierbees.navy_candle": "Navy Candle",
+	"block.buzzierbees.olive_candle": "Olive Candle",
+	"block.buzzierbees.pale_green_candle": "Pale Green Candle",
+	"block.buzzierbees.pale_pink_candle": "Pale Pink Candle",
+	"block.buzzierbees.pale_yellow_candle": "Pale Yellow Candle",
+	"block.buzzierbees.sky_blue_candle": "Sky Blue Candle",
+	"block.buzzierbees.slate_gray_candle": "Slate Gray Candle",
+	"block.buzzierbees.violet_candle": "Violet Candle",
 	
 	"block.buzzierbees.allium_scented_candle": "Allium Scented Candle",
 	"block.buzzierbees.azure_bluet_scented_candle": "Azure Bluet Scented Candle",
@@ -154,9 +186,9 @@
 	
 	"item.minecraft.potion.effect.long_luck": "Potion of Luck",
 	"item.minecraft.potion.effect.strong_luck": "Potion of Luck",
-	"item.minecraft.potion.effect.bad_luck": "Potion of Bad Luck",
-	"item.minecraft.potion.effect.long_bad_luck": "Potion of Bad Luck",
-	"item.minecraft.potion.effect.strong_bad_luck": "Potion of Bad Luck",	
+	"item.minecraft.potion.effect.unluck": "Potion of Bad Luck",
+	"item.minecraft.potion.effect.long_unluck": "Potion of Bad Luck",
+	"item.minecraft.potion.effect.strong_unluck": "Potion of Bad Luck",	
 
 	"item.minecraft.splash_potion.effect.placebo": "Splash Placebo",
 	"item.minecraft.splash_potion.effect.night_vision_cure": "Splash Cure of Night Vision",
@@ -194,9 +226,9 @@
 
 	"item.minecraft.splash_potion.effect.long_luck": "Splash Potion of Luck",
 	"item.minecraft.splash_potion.effect.strong_luck": "Splash Potion of Luck",
-	"item.minecraft.splash_potion.effect.bad_luck": "Splash Potion of Bad Luck",
-	"item.minecraft.splash_potion.effect.long_bad_luck": "Splash Potion of Bad Luck",
-	"item.minecraft.splash_potion.effect.strong_bad_luck": "Splash Potion of Bad Luck",
+	"item.minecraft.splash_potion.effect.unluck": "Splash Potion of Bad Luck",
+	"item.minecraft.splash_potion.effect.long_unluck": "Splash Potion of Bad Luck",
+	"item.minecraft.splash_potion.effect.strong_unluck": "Splash Potion of Bad Luck",
 
 	"item.minecraft.lingering_potion.effect.placebo": "Placebo",
 	"item.minecraft.lingering_potion.effect.night_vision_cure": "Lingering Cure of Night Vision",
@@ -234,9 +266,9 @@
 	
 	"item.minecraft.lingering_potion.effect.long_luck": "Lingering Potion of Luck",
 	"item.minecraft.lingering_potion.effect.strong_luck": "Lingering Potion of Luck",
-	"item.minecraft.lingering_potion.effect.bad_luck": "Lingering Potion of Bad Luck",
-	"item.minecraft.lingering_potion.effect.long_bad_luck": "Lingering Potion of Bad Luck",
-	"item.minecraft.lingering_potion.effect.strong_bad_luck": "Lingering Potion of Bad Luck",
+	"item.minecraft.lingering_potion.effect.unluck": "Lingering Potion of Bad Luck",
+	"item.minecraft.lingering_potion.effect.long_unluck": "Lingering Potion of Bad Luck",
+	"item.minecraft.lingering_potion.effect.strong_unluck": "Lingering Potion of Bad Luck",
 	
 	"item.minecraft.tipped_arrow.effect.placebo": "Placebo Arrow",
 	"item.minecraft.tipped_arrow.effect.night_vision_cure": "Arrow of Anti Night Vision",
@@ -277,7 +309,22 @@
 	"item.minecraft.tipped_arrow.effect.bad_luck": "Arrow of Bad Luck",
 	"item.minecraft.tipped_arrow.effect.long_bad_luck": "Arrow of Bad Luck",
 	"item.minecraft.tipped_arrow.effect.strong_bad_luck": "Arrow of Bad Luck",
+
+	"block.minecraft.sticky_piston" : "Slimy Piston",
+
+	"item.minecraft.tipped_arrow.effect.unluck": "Arrow of Bad Luck",
+	"item.minecraft.tipped_arrow.effect.long_unluck": "Arrow of Bad Luck",
+	"item.minecraft.tipped_arrow.effect.strong_unluck": "Arrow of Bad Luck",
 	
+	"advancements.husbandry.clover_honey.title": "It Ain't Clover Yet",
+	"advancements.husbandry.clover_honey.description": "Create Clover Honey using a Clover Leaf",
 	
-	"block.minecraft.sticky_piston" : "Slimy Piston"
+	"advancements.husbandry.four_leaf_clover.title": "Better Luck This Time",
+	"advancements.husbandry.four_leaf_clover.description": "Find a Four Leaf Clover",
+	
+	"advancements.nether.scented_candle.title": "Aromatherapy",
+	"advancements.nether.scented_candle.description": "Obtain a Scented Candle",
+	
+	"advancements.nether.all_scented_candles.title": "Full Scent",
+	"advancements.nether.all_scented_candles.description": "Obtain all Scented Candles"
 }

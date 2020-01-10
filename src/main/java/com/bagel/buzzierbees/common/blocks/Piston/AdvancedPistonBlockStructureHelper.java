@@ -1,4 +1,4 @@
-package com.bagel.buzzierbees.common.blocks.Piston;
+/*package com.bagel.buzzierbees.common.blocks.piston;
 
 import java.util.List;
 
@@ -170,17 +170,12 @@ public class AdvancedPistonBlockStructureHelper {
       return true;
    }
 
-   /**
-    * Returns a List<BlockPos> of all the blocks that are being moved by the piston.
-    */
    public List<BlockPos> getBlocksToMove() {
       return this.toMove;
    }
 
-   /**
-    * Returns an List<BlockPos> of all the blocks that are being destroyed by the piston.
-    */
    public List<BlockPos> getBlocksToDestroy() {
       return this.toDestroy;
    }
 }
+*/
