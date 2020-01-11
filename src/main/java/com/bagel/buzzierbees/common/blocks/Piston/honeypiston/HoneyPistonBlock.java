@@ -39,12 +39,10 @@ public class HoneyPistonBlock extends DirectionalBlock {
    protected static final VoxelShape PISTON_BASE_NORTH_AABB = Block.makeCuboidShape(0.0D, 0.0D, 4.0D, 16.0D, 16.0D, 16.0D);
    protected static final VoxelShape PISTON_BASE_UP_AABB = Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 12.0D, 16.0D);
    protected static final VoxelShape PISTON_BASE_DOWN_AABB = Block.makeCuboidShape(0.0D, 4.0D, 0.0D, 16.0D, 16.0D, 16.0D);
-   private final boolean isSticky;
 
    public HoneyPistonBlock(boolean slime, Properties properties) {
       super(properties);
       this.setDefaultState(this.stateContainer.getBaseState().with(FACING, Direction.NORTH).with(EXTENDED, Boolean.valueOf(false)));
-      this.isSticky = slime;
    }
 
    @SuppressWarnings("deprecation")
@@ -193,39 +191,35 @@ public class HoneyPistonBlock extends DirectionalBlock {
          if (net.minecraftforge.event.ForgeEventFactory.onPistonMovePre(worldIn, pos, direction, false)) return false;
          TileEntity tileentity1 = worldIn.getTileEntity(pos.offset(direction));
          if (tileentity1 instanceof HoneyPistonTileEntity) {
-            ((HoneyPistonTileEntity)tileentity1).clearPistonTileEntity();
+            ((HoneyPistonTileEntity) tileentity1).clearPistonTileEntity();
          }
 
-         worldIn.setBlockState(pos, ModBlocks.MOVING_HONEY_PISTON.getDefaultState().with(MovingHoneyPistonBlock.FACING, direction).with(MovingHoneyPistonBlock.TYPE, this.isSticky ? PistonType.STICKY : PistonType.DEFAULT), 3);
+         worldIn.setBlockState(pos, ModBlocks.MOVING_HONEY_PISTON.getDefaultState().with(MovingHoneyPistonBlock.FACING, direction).with(MovingHoneyPistonBlock.TYPE, PistonType.STICKY), 3);
          worldIn.setTileEntity(pos, MovingHoneyPistonBlock.createTilePiston(this.getDefaultState().with(FACING, Direction.byIndex(param & 7)), direction, false, true));
-         if (this.isSticky) {
-            BlockPos blockpos = pos.add(direction.getXOffset() * 2, direction.getYOffset() * 2, direction.getZOffset() * 2);
-            BlockState blockstate = worldIn.getBlockState(blockpos);
-            Block block = blockstate.getBlock();
-            boolean flag1 = false;
-            if (block == ModBlocks.MOVING_HONEY_PISTON) {
-               TileEntity tileentity = worldIn.getTileEntity(blockpos);
-               if (tileentity instanceof HoneyPistonTileEntity) {
-                  HoneyPistonTileEntity pistontileentity = (HoneyPistonTileEntity)tileentity;
-                  if (pistontileentity.getFacing() == direction && pistontileentity.isExtending()) {
-                     pistontileentity.clearPistonTileEntity();
-                     flag1 = true;
-                  }
+         BlockPos blockpos = pos.add(direction.getXOffset() * 2, direction.getYOffset() * 2, direction.getZOffset() * 2);
+         BlockState blockstate = worldIn.getBlockState(blockpos);
+         Block block = blockstate.getBlock();
+         boolean flag1 = false;
+         if (block == ModBlocks.MOVING_HONEY_PISTON) {
+            TileEntity tileentity = worldIn.getTileEntity(blockpos);
+            if (tileentity instanceof HoneyPistonTileEntity) {
+               HoneyPistonTileEntity pistontileentity = (HoneyPistonTileEntity) tileentity;
+               if (pistontileentity.getFacing() == direction && pistontileentity.isExtending()) {
+                  pistontileentity.clearPistonTileEntity();
+                  flag1 = true;
                }
             }
-
-            if (!flag1) {
-               if (id != 1 || blockstate.isAir(worldIn, blockpos) || !canPush(blockstate, worldIn, blockpos, direction.getOpposite(), false, direction) || blockstate.getPushReaction() != PushReaction.NORMAL && block != Blocks.PISTON && block != ModBlocks.HONEY_PISTON && block != Blocks.STICKY_PISTON) {
-                  worldIn.removeBlock(pos.offset(direction), false);
-               } else {
-                  this.doMove(worldIn, pos, direction, false);
-               }
-            }
-         } else {
-            worldIn.removeBlock(pos.offset(direction), false);
          }
 
-         worldIn.playSound((PlayerEntity)null, pos, SoundEvents.BLOCK_PISTON_CONTRACT, SoundCategory.BLOCKS, 0.5F, worldIn.rand.nextFloat() * 0.15F + 0.6F);
+         if (!flag1) {
+            if (id != 1 || blockstate.isAir(worldIn, blockpos) || !canPush(blockstate, worldIn, blockpos, direction.getOpposite(), false, direction) || blockstate.getPushReaction() != PushReaction.NORMAL && block != ModBlocks.HONEY_PISTON) {
+               worldIn.removeBlock(pos.offset(direction), false);
+            } else {
+               this.doMove(worldIn, pos, direction, false);
+            }
+         }
+
+         worldIn.playSound((PlayerEntity) null, pos, SoundEvents.BLOCK_PISTON_CONTRACT, SoundCategory.BLOCKS, 0.5F, worldIn.rand.nextFloat() * 0.15F + 0.6F);
       }
 
       net.minecraftforge.event.ForgeEventFactory.onPistonMovePost(worldIn, pos, direction, (id == 0));
@@ -311,16 +305,16 @@ public class HoneyPistonBlock extends DirectionalBlock {
             BlockState blockstate5 = worldIn.getBlockState(blockpos3);
             blockpos3 = blockpos3.offset(direction);
             map.remove(blockpos3);
-            worldIn.setBlockState(blockpos3, ModBlocks.MOVING_PISTON.getDefaultState().with(FACING, directionIn), 68);
+            worldIn.setBlockState(blockpos3, ModBlocks.MOVING_HONEY_PISTON.getDefaultState().with(FACING, directionIn), 68);
             worldIn.setTileEntity(blockpos3, MovingHoneyPistonBlock.createTilePiston(list1.get(l), directionIn, extending, false));
             --k;
             ablockstate[k] = blockstate5;
          }
 
          if (extending) {
-            PistonType pistontype = this.isSticky ? PistonType.STICKY : PistonType.DEFAULT;
+            PistonType pistontype = PistonType.STICKY;
             BlockState blockstate4 = ModBlocks.HONEY_PISTON_HEAD.getDefaultState().with(HoneyPistonHeadBlock.FACING, directionIn).with(HoneyPistonHeadBlock.TYPE, pistontype);
-            BlockState blockstate6 = ModBlocks.MOVING_HONEY_PISTON.getDefaultState().with(MovingHoneyPistonBlock.FACING, directionIn).with(MovingHoneyPistonBlock.TYPE, this.isSticky ? PistonType.STICKY : PistonType.DEFAULT);
+            BlockState blockstate6 = ModBlocks.MOVING_HONEY_PISTON.getDefaultState().with(MovingHoneyPistonBlock.FACING, directionIn).with(MovingHoneyPistonBlock.TYPE, PistonType.STICKY);
             map.remove(blockpos);
             worldIn.setBlockState(blockpos, blockstate6, 68);
             worldIn.setTileEntity(blockpos, MovingHoneyPistonBlock.createTilePiston(blockstate4, directionIn, true, true));
