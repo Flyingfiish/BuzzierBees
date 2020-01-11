@@ -2,6 +2,7 @@ package com.bagel.buzzierbees.common.blocks;
 
 import com.bagel.buzzierbees.common.BuzzierBees;
 import com.bagel.buzzierbees.common.blocks.piston.AdvancedPistonTileEntity;
+import com.bagel.buzzierbees.common.blocks.piston.honeypiston.HoneyPistonTileEntity;
 import net.minecraft.tileentity.PistonTileEntity;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraftforge.fml.RegistryObject;
@@ -40,6 +41,11 @@ public class ModTileEntities {
 	public static final RegistryObject<TileEntityType<AdvancedPistonTileEntity>> PISTON = TILE_ENTITY_TYPES.register("piston",
 			() -> TileEntityType.Builder.create(AdvancedPistonTileEntity::new,
 					ModBlocks.MOVING_PISTON)
+					.build(null));
+
+	public static final RegistryObject<TileEntityType<HoneyPistonTileEntity>> HONEY_PISTON = TILE_ENTITY_TYPES.register("honey_piston",
+			() -> TileEntityType.Builder.create(HoneyPistonTileEntity::new,
+					ModBlocks.MOVING_HONEY_PISTON)
 					.build(null));
 
 

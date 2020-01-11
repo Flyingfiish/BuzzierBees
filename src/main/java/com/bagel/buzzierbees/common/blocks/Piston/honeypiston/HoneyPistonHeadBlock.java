@@ -1,7 +1,6 @@
-package com.bagel.buzzierbees.common.blocks.piston;
+package com.bagel.buzzierbees.common.blocks.piston.honeypiston;
 
 import com.bagel.buzzierbees.common.blocks.ModBlocks;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -26,7 +25,7 @@ import net.minecraft.world.IWorld;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 
-public class AdvancedPistonHeadBlock extends DirectionalBlock {
+public class HoneyPistonHeadBlock extends DirectionalBlock {
    public static final EnumProperty<PistonType> TYPE = BlockStateProperties.PISTON_TYPE;
    public static final BooleanProperty SHORT = BlockStateProperties.SHORT;
    protected static final VoxelShape PISTON_EXTENSION_EAST_AABB = Block.makeCuboidShape(12.0D, 0.0D, 0.0D, 16.0D, 16.0D, 16.0D);
@@ -48,7 +47,7 @@ public class AdvancedPistonHeadBlock extends DirectionalBlock {
    protected static final VoxelShape SHORT_EAST_ARM_AABB = Block.makeCuboidShape(0.0D, 6.0D, 6.0D, 12.0D, 10.0D, 10.0D);
    protected static final VoxelShape SHORT_WEST_ARM_AABB = Block.makeCuboidShape(4.0D, 6.0D, 6.0D, 16.0D, 10.0D, 10.0D);
 
-   public AdvancedPistonHeadBlock(Block.Properties properties) {
+   public HoneyPistonHeadBlock(Properties properties) {
       super(properties);
       this.setDefaultState(this.stateContainer.getBaseState().with(FACING, Direction.NORTH).with(TYPE, PistonType.DEFAULT).with(SHORT, Boolean.valueOf(false)));
    }
@@ -108,7 +107,7 @@ public class AdvancedPistonHeadBlock extends DirectionalBlock {
       if (!worldIn.isRemote && player.abilities.isCreativeMode) {
          BlockPos blockpos = pos.offset(state.get(FACING).getOpposite());
          Block block = worldIn.getBlockState(blockpos).getBlock();
-         if (block == ModBlocks.PISTON || block == ModBlocks.HONEY_PISTON || block == ModBlocks.STICKY_PISTON) {
+         if (block == ModBlocks.HONEY_PISTON) {
             worldIn.removeBlock(blockpos, false);
          }
       }
@@ -123,7 +122,7 @@ public class AdvancedPistonHeadBlock extends DirectionalBlock {
          Direction direction = state.get(FACING).getOpposite();
          pos = pos.offset(direction);
          BlockState blockstate = worldIn.getBlockState(pos);
-         if ((blockstate.getBlock() == ModBlocks.HONEY_PISTON) && blockstate.get(AdvancedPistonBlock.EXTENDED)) {
+         if ((blockstate.getBlock() == ModBlocks.HONEY_PISTON) && blockstate.get(HoneyPistonBlock.EXTENDED)) {
             spawnDrops(blockstate, worldIn, pos);
             worldIn.removeBlock(pos, false);
          }
@@ -145,7 +144,7 @@ public BlockState updatePostPlacement(BlockState stateIn, Direction facing, Bloc
    @SuppressWarnings("deprecation")
    public boolean isValidPosition(BlockState state, IWorldReader worldIn, BlockPos pos) {
       Block block = worldIn.getBlockState(pos.offset(state.get(FACING).getOpposite())).getBlock();
-      return block == ModBlocks.PISTON || block == ModBlocks.STICKY_PISTON|| block == ModBlocks.HONEY_PISTON || block == ModBlocks.MOVING_PISTON;
+      return block == ModBlocks.HONEY_PISTON || block == ModBlocks.MOVING_HONEY_PISTON;
    }
 
    @SuppressWarnings("deprecation")
@@ -160,7 +159,7 @@ public BlockState updatePostPlacement(BlockState stateIn, Direction facing, Bloc
    @SuppressWarnings("deprecation")
    public ItemStack getItem(IBlockReader worldIn, BlockPos pos, BlockState state) {
       Block pistonBlock = state.getBlock();
-      return new ItemStack(state.get(TYPE) == PistonType.STICKY ? ModBlocks.STICKY_PISTON : ModBlocks.PISTON);
+      return new ItemStack(state.get(TYPE) == PistonType.STICKY ? ModBlocks.HONEY_PISTON : ModBlocks.PISTON);
    }
 
    @SuppressWarnings("deprecation")

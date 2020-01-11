@@ -3,6 +3,9 @@ package com.bagel.buzzierbees.common.blocks;
 import com.bagel.buzzierbees.common.blocks.piston.AdvancedMovingPistonBlock;
 import com.bagel.buzzierbees.common.blocks.piston.AdvancedPistonBlock;
 import com.bagel.buzzierbees.common.blocks.piston.AdvancedPistonHeadBlock;
+import com.bagel.buzzierbees.common.blocks.piston.honeypiston.HoneyPistonBlock;
+import com.bagel.buzzierbees.common.blocks.piston.honeypiston.HoneyPistonHeadBlock;
+import com.bagel.buzzierbees.common.blocks.piston.honeypiston.MovingHoneyPistonBlock;
 import com.bagel.buzzierbees.common.blocks.stickyblocks.NewCloverHoneyBlock;
 import com.bagel.buzzierbees.common.blocks.stickyblocks.NewHoneyBlock;
 import com.bagel.buzzierbees.common.blocks.stickyblocks.NewSlimeBlock;
@@ -13,7 +16,6 @@ import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.potion.Effects;
-import net.minecraft.state.EnumProperty;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.ModList;
@@ -101,15 +103,18 @@ public class ModBlocks
 	public static Block RED_TULIP_SCENTED_CANDLE;
 	public static Block WITHER_ROSE_SCENTED_CANDLE;
 
-	@ObjectHolder("minecraft:piston")
-	public static Block PISTON;
-	@ObjectHolder("minecraft:sticky_piston")
-	public static Block STICKY_PISTON;
-	public static Block HONEY_PISTON;
 	@ObjectHolder("minecraft:piston_head")
 	public static Block PISTON_HEAD;
 	@ObjectHolder("minecraft:moving_piston")
 	public static Block MOVING_PISTON;
+	@ObjectHolder("minecraft:piston")
+	public static Block PISTON;
+	@ObjectHolder("minecraft:sticky_piston")
+	public static Block STICKY_PISTON;
+
+	public static Block HONEY_PISTON_HEAD;
+	public static Block MOVING_HONEY_PISTON;
+	public static Block HONEY_PISTON;
 
 	//Mod Scented Candles
 	public static Block CARTWHEEL_SCENTED_CANDLE;
@@ -186,14 +191,17 @@ public class ModBlocks
 		ACACIA_BEEHIVE = registerBlock(new BeehiveBlock(Block.Properties.from(Blocks.field_226906_mb_)), "acacia_beehive", ItemGroup.DECORATIONS);
 		DARK_OAK_BEEHIVE = registerBlock(new BeehiveBlock(Block.Properties.from(Blocks.field_226906_mb_)), "dark_oak_beehive", ItemGroup.DECORATIONS);
 
-		WAX_BLOCK          = registerBlock(new Block           (Block.Properties.create(Material.CORAL).hardnessAndResistance(0.3F).sound(SoundType.CORAL)), "wax_block",          ItemGroup.DECORATIONS);
-		HONEY_LAMP         = registerBlock(new HoneyLamp       (Block.Properties.from(Blocks.END_ROD).sound(SoundType.field_226947_m_)),                     "honey_lamp",         ItemGroup.DECORATIONS);
+		WAX_BLOCK          = registerBlock(new Block (Block.Properties.create(Material.CORAL).hardnessAndResistance(0.3F).sound(SoundType.CORAL)), "wax_block", ItemGroup.DECORATIONS);
+		HONEY_LAMP         = registerBlock(new HoneyLamp (Block.Properties.from(Blocks.END_ROD).sound(SoundType.field_226947_m_)), "honey_lamp", ItemGroup.DECORATIONS);
 
 		MOVING_PISTON 	= registerBlockNoItem(new AdvancedMovingPistonBlock(Block.Properties.create(Material.PISTON).hardnessAndResistance(-1.0F).variableOpacity().noDrops().func_226896_b_()), "minecraft:moving_piston");
 		PISTON_HEAD 	= registerBlockNoItem(new AdvancedPistonHeadBlock(Block.Properties.create(Material.PISTON).hardnessAndResistance(0.5F).noDrops()), "minecraft:piston_head");
 		PISTON 			= registerBlock(new AdvancedPistonBlock(false, Block.Properties.create(Material.PISTON).hardnessAndResistance(0.5F)), "minecraft:piston", ItemGroup.REDSTONE);
 		STICKY_PISTON 	= registerBlock(new AdvancedPistonBlock(true, Block.Properties.create(Material.PISTON).hardnessAndResistance(0.5F)), "minecraft:sticky_piston", ItemGroup.REDSTONE);
-		HONEY_PISTON 	= registerBlock(new AdvancedPistonBlock(true, Block.Properties.from(Blocks.STICKY_PISTON)), "honey_piston", ItemGroup.REDSTONE);
+
+		HONEY_PISTON_HEAD = registerBlockNoItem(new HoneyPistonHeadBlock(Block.Properties.create(Material.PISTON).hardnessAndResistance(0.5F).noDrops()), "honey_piston_head");
+		MOVING_HONEY_PISTON = registerBlockNoItem(new MovingHoneyPistonBlock(Block.Properties.create(Material.PISTON).hardnessAndResistance(-1.0F).variableOpacity().noDrops().func_226896_b_()), "moving_honey_piston");
+		HONEY_PISTON 	= registerBlock(new HoneyPistonBlock(true, Block.Properties.create(Material.PISTON).hardnessAndResistance(0.5F)), "honey_piston", ItemGroup.REDSTONE);
 
 		CRYSTALLIZED_HONEY_BLOCK        = registerBlock(new Block(Block.Properties.create(Material.GLASS).func_226896_b_().hardnessAndResistance(0.3F).sound(SoundType.GLASS)), "crystallized_honey_block", ItemGroup.DECORATIONS);
 

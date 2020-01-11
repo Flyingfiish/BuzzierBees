@@ -1,14 +1,12 @@
-package com.bagel.buzzierbees.common.blocks.piston;
-
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
+package com.bagel.buzzierbees.common.blocks.piston.honeypiston;
 
 import com.bagel.buzzierbees.common.blocks.ModBlocks;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-
-import net.minecraft.block.*;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
+import net.minecraft.block.DirectionalBlock;
 import net.minecraft.block.material.PushReaction;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -20,11 +18,7 @@ import net.minecraft.state.StateContainer;
 import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.state.properties.PistonType;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Direction;
-import net.minecraft.util.Mirror;
-import net.minecraft.util.Rotation;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.SoundEvents;
+import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
@@ -33,7 +27,11 @@ import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 
-public class AdvancedPistonBlock extends DirectionalBlock {
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+
+public class HoneyPistonBlock extends DirectionalBlock {
    public static final BooleanProperty EXTENDED = BlockStateProperties.EXTENDED;
    protected static final VoxelShape PISTON_BASE_EAST_AABB = Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 12.0D, 16.0D, 16.0D);
    protected static final VoxelShape PISTON_BASE_WEST_AABB = Block.makeCuboidShape(4.0D, 0.0D, 0.0D, 16.0D, 16.0D, 16.0D);
@@ -43,7 +41,7 @@ public class AdvancedPistonBlock extends DirectionalBlock {
    protected static final VoxelShape PISTON_BASE_DOWN_AABB = Block.makeCuboidShape(0.0D, 4.0D, 0.0D, 16.0D, 16.0D, 16.0D);
    private final boolean isSticky;
 
-   public AdvancedPistonBlock(boolean slime, Block.Properties properties) {
+   public HoneyPistonBlock(boolean slime, Properties properties) {
       super(properties);
       this.setDefaultState(this.stateContainer.getBaseState().with(FACING, Direction.NORTH).with(EXTENDED, Boolean.valueOf(false)));
       this.isSticky = slime;
@@ -118,7 +116,7 @@ public class AdvancedPistonBlock extends DirectionalBlock {
       Direction direction = state.get(FACING);
       boolean flag = this.shouldBeExtended(worldIn, pos, direction);
       if (flag && !state.get(EXTENDED)) {
-         if ((new AdvancedPistonBlockStructureHelper(worldIn, pos, direction, true)).canMove()) {
+         if ((new HoneyPistonBlockStructureHelper(worldIn, pos, direction, true)).canMove()) {
             worldIn.addBlockEvent(pos, this, 0, direction.getIndex());
          }
       } else if (!flag && state.get(EXTENDED)) {
@@ -127,8 +125,8 @@ public class AdvancedPistonBlock extends DirectionalBlock {
          int i = 1;
          if (blockstate.getBlock() == ModBlocks.MOVING_PISTON && blockstate.get(FACING) == direction) {
             TileEntity tileentity = worldIn.getTileEntity(blockpos);
-            if (tileentity instanceof AdvancedPistonTileEntity) {
-               AdvancedPistonTileEntity pistontileentity = (AdvancedPistonTileEntity)tileentity;
+            if (tileentity instanceof HoneyPistonTileEntity) {
+               HoneyPistonTileEntity pistontileentity = (HoneyPistonTileEntity)tileentity;
                if (pistontileentity.isExtending() && (pistontileentity.getProgress(0.0F) < 0.5F || worldIn.getGameTime() == pistontileentity.getLastTicked() || ((ServerWorld)worldIn).isInsideTick())) {
                   i = 2;
                }
@@ -194,21 +192,21 @@ public class AdvancedPistonBlock extends DirectionalBlock {
       } else if (id == 1 || id == 2) {
          if (net.minecraftforge.event.ForgeEventFactory.onPistonMovePre(worldIn, pos, direction, false)) return false;
          TileEntity tileentity1 = worldIn.getTileEntity(pos.offset(direction));
-         if (tileentity1 instanceof AdvancedPistonTileEntity) {
-            ((AdvancedPistonTileEntity)tileentity1).clearPistonTileEntity();
+         if (tileentity1 instanceof HoneyPistonTileEntity) {
+            ((HoneyPistonTileEntity)tileentity1).clearPistonTileEntity();
          }
 
-         worldIn.setBlockState(pos, ModBlocks.MOVING_PISTON.getDefaultState().with(AdvancedMovingPistonBlock.FACING, direction).with(AdvancedMovingPistonBlock.TYPE, this.isSticky ? PistonType.STICKY : PistonType.DEFAULT), 3);
-         worldIn.setTileEntity(pos, AdvancedMovingPistonBlock.createTilePiston(this.getDefaultState().with(FACING, Direction.byIndex(param & 7)), direction, false, true));
+         worldIn.setBlockState(pos, ModBlocks.MOVING_HONEY_PISTON.getDefaultState().with(MovingHoneyPistonBlock.FACING, direction).with(MovingHoneyPistonBlock.TYPE, this.isSticky ? PistonType.STICKY : PistonType.DEFAULT), 3);
+         worldIn.setTileEntity(pos, MovingHoneyPistonBlock.createTilePiston(this.getDefaultState().with(FACING, Direction.byIndex(param & 7)), direction, false, true));
          if (this.isSticky) {
             BlockPos blockpos = pos.add(direction.getXOffset() * 2, direction.getYOffset() * 2, direction.getZOffset() * 2);
             BlockState blockstate = worldIn.getBlockState(blockpos);
             Block block = blockstate.getBlock();
             boolean flag1 = false;
-            if (block == ModBlocks.MOVING_PISTON) {
+            if (block == ModBlocks.MOVING_HONEY_PISTON) {
                TileEntity tileentity = worldIn.getTileEntity(blockpos);
-               if (tileentity instanceof AdvancedPistonTileEntity) {
-                  AdvancedPistonTileEntity pistontileentity = (AdvancedPistonTileEntity)tileentity;
+               if (tileentity instanceof HoneyPistonTileEntity) {
+                  HoneyPistonTileEntity pistontileentity = (HoneyPistonTileEntity)tileentity;
                   if (pistontileentity.getFacing() == direction && pistontileentity.isExtending()) {
                      pistontileentity.clearPistonTileEntity();
                      flag1 = true;
@@ -246,7 +244,7 @@ public class AdvancedPistonBlock extends DirectionalBlock {
          return false;
       } else if (pos.getY() >= 0 && (facing != Direction.DOWN || pos.getY() != 0)) {
          if (pos.getY() <= worldIn.getHeight() - 1 && (facing != Direction.UP || pos.getY() != worldIn.getHeight() - 1)) {
-            if (block != Blocks.PISTON && block != Blocks.STICKY_PISTON && block != ModBlocks.HONEY_PISTON) {
+            if (block != ModBlocks.PISTON && block != ModBlocks.STICKY_PISTON && block != ModBlocks.HONEY_PISTON) {
                if (blockStateIn.getBlockHardness(worldIn, pos) == -1.0F) {
                   return false;
                }
@@ -274,11 +272,11 @@ public class AdvancedPistonBlock extends DirectionalBlock {
 
    private boolean doMove(World worldIn, BlockPos pos, Direction directionIn, boolean extending) {
       BlockPos blockpos = pos.offset(directionIn);
-      if (!extending && worldIn.getBlockState(blockpos).getBlock() == ModBlocks.PISTON_HEAD) {
+      if (!extending && worldIn.getBlockState(blockpos).getBlock() == ModBlocks.HONEY_PISTON_HEAD) {
          worldIn.setBlockState(blockpos, Blocks.AIR.getDefaultState(), 20);
       }
 
-      AdvancedPistonBlockStructureHelper honeypistonblockstructurehelper = new AdvancedPistonBlockStructureHelper(worldIn, pos, directionIn, extending);
+      HoneyPistonBlockStructureHelper honeypistonblockstructurehelper = new HoneyPistonBlockStructureHelper(worldIn, pos, directionIn, extending);
       if (!honeypistonblockstructurehelper.canMove()) {
          return false;
       } else {
@@ -314,18 +312,18 @@ public class AdvancedPistonBlock extends DirectionalBlock {
             blockpos3 = blockpos3.offset(direction);
             map.remove(blockpos3);
             worldIn.setBlockState(blockpos3, ModBlocks.MOVING_PISTON.getDefaultState().with(FACING, directionIn), 68);
-            worldIn.setTileEntity(blockpos3, AdvancedMovingPistonBlock.createTilePiston(list1.get(l), directionIn, extending, false));
+            worldIn.setTileEntity(blockpos3, MovingHoneyPistonBlock.createTilePiston(list1.get(l), directionIn, extending, false));
             --k;
             ablockstate[k] = blockstate5;
          }
 
          if (extending) {
             PistonType pistontype = this.isSticky ? PistonType.STICKY : PistonType.DEFAULT;
-            BlockState blockstate4 = ModBlocks.PISTON_HEAD.getDefaultState().with(AdvancedPistonHeadBlock.FACING, directionIn).with(AdvancedPistonHeadBlock.TYPE, pistontype);
-            BlockState blockstate6 = ModBlocks.MOVING_PISTON.getDefaultState().with(AdvancedMovingPistonBlock.FACING, directionIn).with(AdvancedMovingPistonBlock.TYPE, this.isSticky ? PistonType.STICKY : PistonType.DEFAULT);
+            BlockState blockstate4 = ModBlocks.HONEY_PISTON_HEAD.getDefaultState().with(HoneyPistonHeadBlock.FACING, directionIn).with(HoneyPistonHeadBlock.TYPE, pistontype);
+            BlockState blockstate6 = ModBlocks.MOVING_HONEY_PISTON.getDefaultState().with(MovingHoneyPistonBlock.FACING, directionIn).with(MovingHoneyPistonBlock.TYPE, this.isSticky ? PistonType.STICKY : PistonType.DEFAULT);
             map.remove(blockpos);
             worldIn.setBlockState(blockpos, blockstate6, 68);
-            worldIn.setTileEntity(blockpos, AdvancedMovingPistonBlock.createTilePiston(blockstate4, directionIn, true, true));
+            worldIn.setTileEntity(blockpos, MovingHoneyPistonBlock.createTilePiston(blockstate4, directionIn, true, true));
          }
 
          BlockState blockstate3 = Blocks.AIR.getDefaultState();
@@ -354,7 +352,7 @@ public class AdvancedPistonBlock extends DirectionalBlock {
          }
 
          if (extending) {
-            worldIn.notifyNeighborsOfStateChange(blockpos, ModBlocks.PISTON_HEAD);
+            worldIn.notifyNeighborsOfStateChange(blockpos, ModBlocks.HONEY_PISTON_HEAD);
          }
 
          return true;
